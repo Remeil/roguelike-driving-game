@@ -1,0 +1,166 @@
+[gd_scene format=3 uid="uid://c8m3way4px21q"]
+
+[ext_resource type="Script" path="res://src/enemies/street_racer.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]
+size = Vector3(2, 0.85, 4.3)
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerChassis"]
+albedo_color = Color(0.78, 0.08, 0.45, 1)
+metallic = 0.9
+roughness = 0.22
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerCabin"]
+albedo_color = Color(0.04, 0.06, 0.1, 0.95)
+metallic = 0.7
+roughness = 0.12
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerStripe"]
+albedo_color = Color(0.2, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.15, 0.85, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerCarbon"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+metallic = 0.95
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerNitroFlame"]
+albedo_color = Color(0.2, 0.85, 1, 1)
+emission_enabled = true
+emission = Color(0.1, 0.9, 1, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerTaillight"]
+albedo_color = Color(1, 0.1, 0.3, 1)
+emission_enabled = true
+emission = Color(1, 0.15, 0.35, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerTire"]
+albedo_color = Color(0.08, 0.08, 0.08, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_RacerRim"]
+albedo_color = Color(0.2, 0.85, 1, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
+material = SubResource("Mat_RacerTire")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.28
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rim"]
+material = SubResource("Mat_RacerRim")
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.29
+radial_segments = 8
+
+[node name="StreetRacer" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+shape = SubResource("BoxShape3D_chassis")
+
+[node name="GroundRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+target_position = Vector3(0, -2.5, 0)
+collision_mask = 2
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Underglow" type="OmniLight3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+light_color = Color(0.15, 0.85, 1, 1)
+light_energy = 2.2
+omni_range = 4.8
+
+[node name="Chassis" type="CSGBox3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0)
+size = Vector3(1.95, 0.46, 4.3)
+material = SubResource("Mat_RacerChassis")
+
+[node name="Cabin" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0.15)
+size = Vector3(1.4, 0.38, 1.85)
+material = SubResource("Mat_RacerCabin")
+
+[node name="RacingStripe" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24, 0)
+size = Vector3(0.28, 0.02, 4.32)
+material = SubResource("Mat_RacerStripe")
+
+[node name="FrontSplitter" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, -2.18)
+size = Vector3(1.92, 0.1, 0.3)
+material = SubResource("Mat_RacerCarbon")
+
+[node name="RearWingBlade" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 1.95)
+size = Vector3(2.05, 0.06, 0.48)
+material = SubResource("Mat_RacerCarbon")
+
+[node name="WingPillar_L" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.45, 1.95)
+size = Vector3(0.08, 0.36, 0.2)
+material = SubResource("Mat_RacerCarbon")
+
+[node name="WingPillar_R" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.45, 1.95)
+size = Vector3(0.08, 0.36, 0.2)
+material = SubResource("Mat_RacerCarbon")
+
+[node name="TaillightBar" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 2.16)
+size = Vector3(1.6, 0.1, 0.08)
+material = SubResource("Mat_RacerTaillight")
+
+[node name="NitroFlame_L" type="CSGCylinder3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.45, -0.05, 2.7)
+visible = false
+radius = 0.12
+height = 1.1
+material = SubResource("Mat_RacerNitroFlame")
+
+[node name="NitroFlame_R" type="CSGCylinder3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.45, -0.05, 2.7)
+visible = false
+radius = 0.12
+height = 1.1
+material = SubResource("Mat_RacerNitroFlame")
+
+[node name="Wheel_FL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.35, -1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_FL"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_FR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.35, -1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_FR"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_RL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.35, 1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_RL"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_RR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.35, 1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_RR"]
+mesh = SubResource("CylinderMesh_rim")

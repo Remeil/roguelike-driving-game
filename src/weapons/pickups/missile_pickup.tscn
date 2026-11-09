@@ -1,0 +1,106 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7vyk8n2m3p4q"]
+
+[ext_resource type="Script" path="res://src/weapons/pickups/missile_pickup.gd" id="1_pickup"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trigger"]
+height = 1.8
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_CrateBase"]
+albedo_color = Color(0.14, 0.17, 0.15, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_HazardBand"]
+albedo_color = Color(1, 0.72, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.65, 0.1, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="StandardMaterial3D" id="Mat_MissileBody"]
+albedo_color = Color(0.82, 0.85, 0.9, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="Mat_MissileWarhead"]
+albedo_color = Color(0.95, 0.22, 0.15, 1)
+emission_enabled = true
+emission = Color(0.9, 0.2, 0.1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_HaloRing"]
+albedo_color = Color(1, 0.75, 0.2, 0.8)
+emission_enabled = true
+emission = Color(1, 0.7, 0.15, 1)
+emission_energy_multiplier = 3.0
+
+[node name="MissilePickup" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_pickup")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("CylinderShape3D_trigger")
+
+[node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="CrateBody" type="CSGBox3D" parent="Visuals"]
+size = Vector3(0.75, 0.32, 1.05)
+material = SubResource("Mat_CrateBase")
+
+[node name="HazardBand" type="CSGBox3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+size = Vector3(0.77, 0.06, 0.32)
+material = SubResource("Mat_HazardBand")
+
+[node name="MissileLeft" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.22, 0)
+
+[node name="Cylinder" type="CSGCylinder3D" parent="Visuals/MissileLeft"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0.08)
+radius = 0.08
+height = 0.58
+sides = 12
+material = SubResource("Mat_MissileBody")
+
+[node name="Cone" type="CSGCylinder3D" parent="Visuals/MissileLeft"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.3)
+radius = 0.08
+height = 0.18
+cone = true
+sides = 12
+material = SubResource("Mat_MissileWarhead")
+
+[node name="MissileRight" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.22, 0)
+
+[node name="Cylinder" type="CSGCylinder3D" parent="Visuals/MissileRight"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0.08)
+radius = 0.08
+height = 0.58
+sides = 12
+material = SubResource("Mat_MissileBody")
+
+[node name="Cone" type="CSGCylinder3D" parent="Visuals/MissileRight"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.3)
+radius = 0.08
+height = 0.18
+cone = true
+sides = 12
+material = SubResource("Mat_MissileWarhead")
+
+[node name="HaloRing" type="CSGTorus3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+inner_radius = 0.72
+outer_radius = 0.84
+sides = 20
+ring_sides = 6
+material = SubResource("Mat_HaloRing")
+
+[node name="BeaconLight" type="OmniLight3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+light_color = Color(1, 0.75, 0.2, 1)
+light_energy = 2.8
+omni_range = 5.5

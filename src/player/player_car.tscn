@@ -1,0 +1,227 @@
+[gd_scene load_steps=14 format=3 uid="uid://c6v2n7ykqm2b1"]
+
+[ext_resource type="Script" path="res://src/player/arcade_vehicle.gd" id="1_script"]
+[ext_resource type="Script" path="res://src/weapons/weapon_system.gd" id="2_weapons"]
+[ext_resource type="Script" path="res://src/weapons/targeting_system.gd" id="3_targeting"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]
+size = Vector3(2, 0.9, 4.4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CarBody"]
+albedo_color = Color(0.18, 0.2, 0.23, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="Mat_CockpitGlass"]
+albedo_color = Color(0.04, 0.12, 0.16, 0.9)
+metallic = 0.5
+roughness = 0.1
+
+[sub_resource type="StandardMaterial3D" id="Mat_TrimCarbon"]
+albedo_color = Color(0.08, 0.08, 0.08, 1)
+metallic = 0.3
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_WheelTire"]
+albedo_color = Color(0.12, 0.12, 0.12, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_WheelRim"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_GunMetal"]
+albedo_color = Color(0.3, 0.32, 0.35, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_ExhaustBurn"]
+albedo_color = Color(0.2, 0.6, 1, 1)
+emission_enabled = true
+emission = Color(0.15, 0.65, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Headlights"]
+albedo_color = Color(0.9, 0.95, 1, 1)
+emission_enabled = true
+emission = Color(0.9, 0.95, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Taillights"]
+albedo_color = Color(0.9, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(0.9, 0.05, 0.05, 1)
+emission_energy_multiplier = 2.5
+
+[node name="PlayerCar" type="CharacterBody3D"]
+collision_layer = 1
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BoxShape3D_chassis")
+
+[node name="GroundRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+target_position = Vector3(0, -1.8, 0)
+collision_mask = 2
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="MainChassis" type="CSGBox3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
+size = Vector3(1.85, 0.45, 4.2)
+material = SubResource("Mat_CarBody")
+
+[node name="NoseWedge" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 0.9848, 0.1736, 0, -0.1736, 0.9848, 0, -0.1, -1.6)
+size = Vector3(1.78, 0.32, 1.2)
+material = SubResource("Mat_CarBody")
+
+[node name="Cockpit" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0.25)
+size = Vector3(1.35, 0.38, 1.7)
+material = SubResource("Mat_CockpitGlass")
+
+[node name="RearSpoiler" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 1.95)
+size = Vector3(1.8, 0.08, 0.4)
+material = SubResource("Mat_TrimCarbon")
+
+[node name="SpoilerStrutL" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.35, 1.95)
+size = Vector3(0.08, 0.32, 0.2)
+material = SubResource("Mat_TrimCarbon")
+
+[node name="SpoilerStrutR" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.35, 1.95)
+size = Vector3(0.08, 0.32, 0.2)
+material = SubResource("Mat_TrimCarbon")
+
+[node name="CannonL" type="CSGCylinder3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.65, 0.2, -1.6)
+radius = 0.07
+height = 1.1
+material = SubResource("Mat_GunMetal")
+
+[node name="CannonR" type="CSGCylinder3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.65, 0.2, -1.6)
+radius = 0.07
+height = 1.1
+material = SubResource("Mat_GunMetal")
+
+[node name="ExhaustL" type="CSGCylinder3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.45, -0.05, 2.12)
+radius = 0.08
+height = 0.2
+material = SubResource("Mat_ExhaustBurn")
+
+[node name="ExhaustR" type="CSGCylinder3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.45, -0.05, 2.12)
+radius = 0.08
+height = 0.2
+material = SubResource("Mat_ExhaustBurn")
+
+[node name="HeadlightL" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.02, -2.12)
+size = Vector3(0.35, 0.12, 0.08)
+material = SubResource("Mat_Headlights")
+
+[node name="HeadlightR" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.02, -2.12)
+size = Vector3(0.35, 0.12, 0.08)
+material = SubResource("Mat_Headlights")
+
+[node name="TaillightBar" type="CSGBox3D" parent="Visuals/MainChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 2.12)
+size = Vector3(1.7, 0.1, 0.08)
+material = SubResource("Mat_Taillights")
+
+[node name="Wheels" type="Node3D" parent="Visuals"]
+
+[node name="Wheel_FL" type="Node3D" parent="Visuals/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.98, 0.34, -1.35)
+
+[node name="RollHub" type="Node3D" parent="Visuals/Wheels/Wheel_FL"]
+
+[node name="Tire" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_FL/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+radius = 0.35
+height = 0.24
+material = SubResource("Mat_WheelTire")
+
+[node name="Rim" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_FL/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.02, 0, 0)
+radius = 0.22
+height = 0.25
+material = SubResource("Mat_WheelRim")
+
+[node name="Wheel_FR" type="Node3D" parent="Visuals/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.98, 0.34, -1.35)
+
+[node name="RollHub" type="Node3D" parent="Visuals/Wheels/Wheel_FR"]
+
+[node name="Tire" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_FR/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+radius = 0.35
+height = 0.24
+material = SubResource("Mat_WheelTire")
+
+[node name="Rim" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_FR/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.02, 0, 0)
+radius = 0.22
+height = 0.25
+material = SubResource("Mat_WheelRim")
+
+[node name="Wheel_RL" type="Node3D" parent="Visuals/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.98, 0.36, 1.35)
+
+[node name="RollHub" type="Node3D" parent="Visuals/Wheels/Wheel_RL"]
+
+[node name="Tire" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_RL/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+radius = 0.37
+height = 0.28
+material = SubResource("Mat_WheelTire")
+
+[node name="Rim" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_RL/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.02, 0, 0)
+radius = 0.23
+height = 0.29
+material = SubResource("Mat_WheelRim")
+
+[node name="Wheel_RR" type="Node3D" parent="Visuals/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.98, 0.36, 1.35)
+
+[node name="RollHub" type="Node3D" parent="Visuals/Wheels/Wheel_RR"]
+
+[node name="Tire" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_RR/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+radius = 0.37
+height = 0.28
+material = SubResource("Mat_WheelTire")
+
+[node name="Rim" type="CSGCylinder3D" parent="Visuals/Wheels/Wheel_RR/RollHub"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.02, 0, 0)
+radius = 0.23
+height = 0.29
+material = SubResource("Mat_WheelRim")
+
+[node name="WeaponPoints" type="Node3D" parent="."]
+
+[node name="Front_L" type="Marker3D" parent="WeaponPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.5, -2.3)
+
+[node name="Front_R" type="Marker3D" parent="WeaponPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.5, -2.3)
+
+[node name="Rear" type="Marker3D" parent="WeaponPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 2.3)
+
+[node name="WeaponSystem" type="Node3D" parent="."]
+script = ExtResource("2_weapons")
+
+[node name="TargetingSystem" type="Node3D" parent="WeaponSystem"]
+script = ExtResource("3_targeting")

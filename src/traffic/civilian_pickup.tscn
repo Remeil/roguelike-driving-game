@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://ccivilianpickup01"]
+
+[ext_resource type="Script" path="res://src/traffic/civilian_vehicle.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pickup"]
+size = Vector3(2.0, 1.1, 4.6)
+
+[sub_resource type="StandardMaterial3D" id="Mat_PickupBody"]
+albedo_color = Color(0.72, 0.22, 0.18, 1)
+metallic = 0.4
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_PickupBed"]
+albedo_color = Color(0.18, 0.18, 0.18, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_PickupGlass"]
+albedo_color = Color(0.08, 0.12, 0.16, 0.9)
+metallic = 0.2
+roughness = 0.1
+
+[sub_resource type="StandardMaterial3D" id="Mat_PickupTire"]
+albedo_color = Color(0.12, 0.12, 0.12, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_PickupLights"]
+albedo_color = Color(0.95, 0.95, 0.85, 1)
+emission_enabled = true
+emission = Color(0.95, 0.95, 0.8, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pickup_tire"]
+material = SubResource("Mat_PickupTire")
+top_radius = 0.38
+bottom_radius = 0.38
+height = 0.28
+radial_segments = 10
+
+[node name="CivilianPickup" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+vehicle_type_name = "Pickup"
+cruising_speed_kph = 86.0
+max_health = 60.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+shape = SubResource("BoxShape3D_pickup")
+
+[node name="ForwardRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -2.3)
+target_position = Vector3(0, 0, -18)
+collision_mask = 5
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Body" type="CSGBox3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+size = Vector3(1.95, 0.55, 4.5)
+material = SubResource("Mat_PickupBody")
+
+[node name="Cabin" type="CSGBox3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, -0.45)
+size = Vector3(1.6, 0.48, 1.8)
+material = SubResource("Mat_PickupGlass")
+
+[node name="CargoBed" type="CSGBox3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 1.1)
+size = Vector3(1.7, 0.35, 1.8)
+material = SubResource("Mat_PickupBed")
+
+[node name="Headlights" type="CSGBox3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, -2.26)
+size = Vector3(1.6, 0.15, 0.1)
+material = SubResource("Mat_PickupLights")
+
+[node name="Wheel_FL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.38, -1.4)
+mesh = SubResource("CylinderMesh_pickup_tire")
+
+[node name="Wheel_FR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.38, -1.4)
+mesh = SubResource("CylinderMesh_pickup_tire")
+
+[node name="Wheel_RL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.38, 1.4)
+mesh = SubResource("CylinderMesh_pickup_tire")
+
+[node name="Wheel_RR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.38, 1.4)
+mesh = SubResource("CylinderMesh_pickup_tire")

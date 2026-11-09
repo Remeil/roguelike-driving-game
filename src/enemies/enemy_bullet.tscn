@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://cenemybullet01"]
+
+[ext_resource type="Script" path="res://src/enemies/enemy_bullet.gd" id="1_script"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bullet"]
+radius = 0.25
+height = 4.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyTracerCore"]
+shading_mode = 0
+albedo_color = Color(1, 0.25, 0.15, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_core"]
+material = SubResource("Mat_EnemyTracerCore")
+radius = 0.08
+height = 4.2
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyTracerGlow"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(1, 0.1, 0.05, 0.85)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_glow"]
+material = SubResource("Mat_EnemyTracerGlow")
+radius = 0.18
+height = 4.6
+radial_segments = 8
+
+[node name="EnemyBullet" type="Area3D"]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_script")
+speed = 175.0
+damage = 8.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_bullet")
+
+[node name="TracerCore" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_core")
+
+[node name="TracerGlow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_glow")

@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmicromissile01"]
+
+[ext_resource type="Script" path="res://src/weapons/projectiles/micro_missile.gd" id="1_script"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_missile"]
+radius = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_MissileHull"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+metallic = 0.85
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_RocketExhaust"]
+albedo_color = Color(1, 0.5, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.45, 0.05, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fuselage"]
+material = SubResource("Mat_MissileHull")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 0.75
+radial_segments = 8
+
+[sub_resource type="SphereMesh" id="SphereMesh_flame"]
+material = SubResource("Mat_RocketExhaust")
+radius = 0.08
+height = 0.16
+radial_segments = 8
+
+[node name="MicroMissile" type="Area3D"]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_missile")
+
+[node name="Fuselage" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_fuselage")
+
+[node name="ExhaustFlame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.42)
+mesh = SubResource("SphereMesh_flame")
+
+[node name="ExhaustLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+light_color = Color(1, 0.6, 0.2, 1)
+light_energy = 2.0
+omni_range = 5.0

@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://da6hjx6lnv62o"]
+
+[ext_resource type="Script" path="res://src/enemies/enemy_pursuit_car.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]
+size = Vector3(2, 0.9, 4.3)
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyChassis"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyCabin"]
+albedo_color = Color(0.06, 0.08, 0.1, 0.95)
+metallic = 0.6
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyVisor"]
+albedo_color = Color(1, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.1, 0.1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemySteel"]
+albedo_color = Color(0.25, 0.26, 0.28, 1)
+metallic = 0.95
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyTire"]
+albedo_color = Color(0.08, 0.08, 0.08, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_EnemyRim"]
+albedo_color = Color(0.7, 0.1, 0.1, 1)
+metallic = 0.8
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
+material = SubResource("Mat_EnemyTire")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.28
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rim"]
+material = SubResource("Mat_EnemyRim")
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.29
+radial_segments = 8
+
+[node name="EnemyPursuitCar" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BoxShape3D_chassis")
+
+[node name="GroundRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+target_position = Vector3(0, -1.8, 0)
+collision_mask = 2
+
+[node name="GunPoint_L" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.55, -2.15)
+
+[node name="GunPoint_R" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.55, -2.15)
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Chassis" type="CSGBox3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+size = Vector3(1.95, 0.52, 4.2)
+material = SubResource("Mat_EnemyChassis")
+
+[node name="Cabin" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.2)
+size = Vector3(1.45, 0.44, 1.9)
+material = SubResource("Mat_EnemyCabin")
+
+[node name="VisorStrobe" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -2.11)
+size = Vector3(1.2, 0.12, 0.1)
+material = SubResource("Mat_EnemyVisor")
+
+[node name="VisorLight" type="OmniLight3D" parent="Visuals/Chassis/VisorStrobe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 2.5
+omni_range = 6.0
+
+[node name="BumperRam" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, -2.14)
+size = Vector3(1.85, 0.32, 0.2)
+material = SubResource("Mat_EnemySteel")
+
+[node name="RearTaillights" type="CSGBox3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 2.11)
+size = Vector3(1.5, 0.12, 0.1)
+material = SubResource("Mat_EnemyVisor")
+
+[node name="HoodCannon_L" type="CSGCylinder3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.65, 0.18, -1.7)
+radius = 0.06
+height = 0.7
+material = SubResource("Mat_EnemySteel")
+
+[node name="HoodCannon_R" type="CSGCylinder3D" parent="Visuals/Chassis"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.65, 0.18, -1.7)
+radius = 0.06
+height = 0.7
+material = SubResource("Mat_EnemySteel")
+
+[node name="Wheel_FL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.35, -1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_FL"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_FR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.35, -1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_FR"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_RL" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.02, 0.35, 1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_RL"]
+mesh = SubResource("CylinderMesh_rim")
+
+[node name="Wheel_RR" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.02, 0.35, 1.35)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="Rim" type="MeshInstance3D" parent="Visuals/Wheel_RR"]
+mesh = SubResource("CylinderMesh_rim")

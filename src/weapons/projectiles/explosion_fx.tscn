@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://cexplosion01"]
+
+[ext_resource type="Script" path="res://src/weapons/projectiles/explosion_fx.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ExplosionFire"]
+albedo_color = Color(1, 0.45, 0.1, 0.85)
+emission_enabled = true
+emission = Color(1, 0.35, 0.05, 1)
+emission_energy_multiplier = 4.0
+transparency = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_fire"]
+material = SubResource("Mat_ExplosionFire")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_debris"]
+direction = Vector3(0, 1, 0)
+spread = 60.0
+initial_velocity_min = 12.0
+initial_velocity_max = 24.0
+gravity = Vector3(0, -20, 0)
+
+[node name="ExplosionFX" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Fireball" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_fire")
+
+[node name="Light" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 5.0
+omni_range = 14.0
+
+[node name="Sparks" type="GPUParticles3D" parent="."]
+emitting = true
+amount = 24
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+process_material = SubResource("ParticleProcessMaterial_debris")
+draw_pass_1 = SubResource("SphereMesh_fire")

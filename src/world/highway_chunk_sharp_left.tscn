@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c6sharpleft01"]
+
+[ext_resource type="Script" path="res://src/world/curved_highway_builder.gd" id="1_script"]
+
+[node name="HighwayChunkSharpLeft" type="Node3D"]
+script = ExtResource("1_script")
+curve_mode = 0
+curve_angle_deg = 45.0
+chunk_length = 120.0
+subdivisions = 40
+road_width = 18.4

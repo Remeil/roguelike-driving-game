@@ -1,0 +1,533 @@
+[gd_scene format=3 uid="uid://df2m118n4vbxr"]
+
+[ext_resource type="Script" path="res://src/ui/tactical_hud.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.06, 0.08, 0.1, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.35, 0.5, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_fill"]
+bg_color = Color(0.1, 0.85, 0.45, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_fill"]
+bg_color = Color(0.15, 0.85, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_speed_fill"]
+bg_color = Color(0.15, 0.7, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boost_fill"]
+bg_color = Color(1, 0.4, 0.1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_heat_fill"]
+bg_color = Color(1, 0.28, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ammo_fill"]
+bg_color = Color(1, 0.75, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oil_fill"]
+bg_color = Color(0.25, 0.85, 0.95, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_objective_fill"]
+bg_color = Color(0.2, 0.85, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mirror"]
+bg_color = Color(0.03, 0.05, 0.07, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.7, 0.9, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="TacticalHUD" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+[node name="Margin" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BottomLeft" type="PanelContainer" parent="Margin"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -148.0
+offset_right = 320.0
+offset_bottom = -28.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="Margin/BottomLeft"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxSpeed" type="HBoxContainer" parent="Margin/BottomLeft/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/BottomLeft/VBox/HBoxSpeed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 14
+text = "SPEED"
+
+[node name="GearLabel" type="Label" parent="Margin/BottomLeft/VBox/HBoxSpeed"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.25, 1)
+theme_override_font_sizes/font_size = 14
+text = " [GEAR 1]"
+
+[node name="SpeedLabel" type="Label" parent="Margin/BottomLeft/VBox/HBoxSpeed"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "0 KPH"
+horizontal_alignment = 2
+
+[node name="SpeedBar" type="ProgressBar" parent="Margin/BottomLeft/VBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_speed_fill")
+max_value = 300.0
+show_percentage = false
+
+[node name="HBoxBoost" type="HBoxContainer" parent="Margin/BottomLeft/VBox"]
+layout_mode = 2
+
+[node name="BoostLabel" type="Label" parent="Margin/BottomLeft/VBox/HBoxBoost"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.65, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "NITRO 100%"
+
+[node name="BoostBar" type="ProgressBar" parent="Margin/BottomLeft/VBox"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_boost_fill")
+value = 100.0
+show_percentage = false
+
+[node name="BottomRight" type="PanelContainer" parent="Margin"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -330.0
+offset_top = -186.0
+offset_right = -28.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="Margin/BottomRight"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HBoxGuns" type="HBoxContainer" parent="Margin/BottomRight/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/BottomRight/VBox/HBoxGuns"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "[J/LMB] TWIN CANNONS"
+
+[node name="HeatLabel" type="Label" parent="Margin/BottomRight/VBox/HBoxGuns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "HEAT 0%"
+horizontal_alignment = 2
+
+[node name="HeatBar" type="ProgressBar" parent="Margin/BottomRight/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_heat_fill")
+show_percentage = false
+
+[node name="HBoxMissiles" type="HBoxContainer" parent="Margin/BottomRight/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/BottomRight/VBox/HBoxMissiles"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "[K/RMB] MICRO-MISSILES"
+
+[node name="MissileLabel" type="Label" parent="Margin/BottomRight/VBox/HBoxMissiles"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "8 / 8"
+horizontal_alignment = 2
+
+[node name="MissileBar" type="ProgressBar" parent="Margin/BottomRight/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_ammo_fill")
+max_value = 8.0
+value = 8.0
+show_percentage = false
+
+[node name="HBoxOil" type="HBoxContainer" parent="Margin/BottomRight/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/BottomRight/VBox/HBoxOil"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "[L/E] OIL SLICK"
+
+[node name="OilLabel" type="Label" parent="Margin/BottomRight/VBox/HBoxOil"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "READY"
+horizontal_alignment = 2
+
+[node name="OilBar" type="ProgressBar" parent="Margin/BottomRight/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_oil_fill")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="TopLeft" type="PanelContainer" parent="Margin"]
+layout_mode = 1
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 260.0
+offset_bottom = 126.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="Margin/TopLeft"]
+layout_mode = 2
+
+[node name="ShieldBox" type="VBoxContainer" parent="Margin/TopLeft/VBox"]
+visible = false
+layout_mode = 2
+
+[node name="ShieldLabel" type="Label" parent="Margin/TopLeft/VBox/ShieldBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "SHIELD 100%"
+
+[node name="ShieldBar" type="ProgressBar" parent="Margin/TopLeft/VBox/ShieldBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_shield_fill")
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="Margin/TopLeft/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "ARMOR 100%"
+
+[node name="HealthBar" type="ProgressBar" parent="Margin/TopLeft/VBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_health_fill")
+value = 100.0
+show_percentage = false
+
+[node name="TopRight" type="PanelContainer" parent="Margin"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = 76.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="ScrapLabel" type="Label" parent="Margin/TopRight"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "SCRAP: 50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopCenter" type="VBoxContainer" parent="Margin"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -155.0
+offset_top = 14.0
+offset_right = 155.0
+offset_bottom = 168.0
+grow_horizontal = 2
+theme_override_constants/separation = 4
+
+[node name="VolumeToast" type="Label" parent="Margin"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 182.0
+offset_right = 320.0
+offset_bottom = 218.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
+text = "VOLUME: 35%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MirrorPanel" type="PanelContainer" parent="Margin/TopCenter"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mirror")
+
+[node name="VBox" type="VBoxContainer" parent="Margin/TopCenter/MirrorPanel"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ThreatHeader" type="HBoxContainer" parent="Margin/TopCenter/MirrorPanel/VBox"]
+layout_mode = 2
+
+[node name="ThreatStatus" type="Label" parent="Margin/TopCenter/MirrorPanel/VBox/ThreatHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.8, 0.95, 1)
+theme_override_font_sizes/font_size = 11
+text = "REAR RADAR // SCANNING"
+horizontal_alignment = 1
+
+[node name="CamKey" type="Label" parent="Margin/TopCenter/MirrorPanel/VBox/ThreatHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.65, 0.75, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "[B] LOOK REAR "
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="Margin/TopCenter/MirrorPanel/VBox"]
+custom_minimum_size = Vector2(290, 74)
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Margin/TopCenter/MirrorPanel/VBox/ViewportContainer"]
+handle_input_locally = false
+size = Vector2i(290, 74)
+render_target_update_mode = 3
+
+[node name="RearCamera" type="Camera3D" parent="Margin/TopCenter/MirrorPanel/VBox/ViewportContainer/SubViewport"]
+current = true
+fov = 68.0
+near = 0.3
+far = 320.0
+
+[node name="ObjectiveBox" type="PanelContainer" parent="Margin/TopCenter"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="Margin" type="MarginContainer" parent="Margin/TopCenter/ObjectiveBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margin/TopCenter/ObjectiveBox/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="HeaderHBox" type="HBoxContainer" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "PURSUIT INTERCEPTION"
+
+[node name="RewardTag" type="Label" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox/HeaderHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 11
+text = "+60 SCRAP"
+
+[node name="Desc" type="Label" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.78, 0.88, 1)
+theme_override_font_sizes/font_size = 11
+text = "Eliminate 3 hostile syndicate pursuit interceptors"
+
+[node name="ProgressHBox" type="HBoxContainer" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProgressBar" type="ProgressBar" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox/ProgressHBox"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_objective_fill")
+max_value = 1.0
+value = 0.0
+show_percentage = false
+
+[node name="CounterLabel" type="Label" parent="Margin/TopCenter/ObjectiveBox/Margin/VBox/ProgressHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "[0 / 3]"
+
+[node name="Center" type="Control" parent="Margin"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 40.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DriftBanner" type="Label" parent="Margin/Center"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 26
+text = "POWER SLIDE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Reticle" type="Control" parent="Margin"]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+
+[node name="BoxOutline" type="ReferenceRect" parent="Margin/Reticle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(0.2, 0.85, 1, 0.85)
+border_width = 2.0
+editor_only = false
+
+[node name="LockStatus" type="Label" parent="Margin/Reticle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = 4.0
+offset_right = 45.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 11
+text = "TRACKING"
+horizontal_alignment = 1
+
+[node name="GunCrosshair" type="Control" parent="Margin"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+mouse_filter = 2
+
+[node name="CrosshairLabel" type="Label" parent="Margin/GunCrosshair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 0.65)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "┼"
+horizontal_alignment = 1
+vertical_alignment = 1

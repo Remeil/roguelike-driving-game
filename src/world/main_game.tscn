@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://c28d5x2jnm61l"]
+
+[ext_resource type="Script" uid="uid://cknxkinccgv7m" path="res://src/world/highway_manager.gd" id="1_hw_mgr"]
+[ext_resource type="PackedScene" uid="uid://c6v2n7ykqm2b1" path="res://src/player/player_car.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://civwjfu28lxyy" path="res://src/player/chase_camera.gd" id="3_camera"]
+[ext_resource type="PackedScene" uid="uid://df2m118n4vbxr" path="res://src/ui/tactical_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" uid="uid://ctesttarget01" path="res://src/weapons/test_target.tscn" id="5_target"]
+[ext_resource type="Script" uid="uid://dn81hdf6t7hi0" path="res://src/enemies/enemy_director.gd" id="6_director"]
+[ext_resource type="Script" uid="uid://b88qjyen1oe4v" path="res://src/traffic/traffic_director.gd" id="7_traffic"]
+[ext_resource type="Script" uid="uid://c2th54har7b7y" path="res://src/world/weapons_van_director.gd" id="8_van_mgr"]
+[ext_resource type="Script" uid="uid://c2axhtcatsy85" path="res://src/roguelike/objective_manager.gd" id="9_obj_mgr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_main"]
+sky_top_color = Color(0.18, 0.42, 0.84, 1)
+sky_horizon_color = Color(0.7, 0.82, 0.94, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.14, 0.22, 0.12, 1)
+ground_horizon_color = Color(0.55, 0.68, 0.62, 1)
+ground_curve = 0.08
+sun_angle_max = 35.0
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_main")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_color = Color(0.52, 0.58, 0.68, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.85
+tonemap_mode = 3
+tonemap_white = 1.15
+glow_enabled = true
+glow_intensity = 0.4
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.68, 0.78, 0.88, 1)
+fog_density = 0.0008
+fog_sky_affect = 0.3
+fog_depth_begin = 130.0
+fog_depth_end = 850.0
+
+[node name="MainGame" type="Node3D" unique_id=473661191]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=538493112]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1867710208]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 30, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.25
+shadow_enabled = true
+shadow_bias = 0.02
+directional_shadow_split_1 = 0.12
+directional_shadow_split_2 = 0.28
+directional_shadow_split_3 = 0.55
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 320.0
+
+[node name="HighwayManager" type="Node3D" parent="." unique_id=1978678180 node_paths=PackedStringArray("player")]
+script = ExtResource("1_hw_mgr")
+player = NodePath("../PlayerCar")
+
+[node name="PlayerCar" parent="." unique_id=1230917630 instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+boost_top_speed_kph = 200.0
+acceleration = 30.0
+coasting_drag = 22.0
+boost_acceleration = 30.0
+gears = [Vector2(0, 1), Vector2(20, 0.6), Vector2(40, 0.35), Vector2(60, 0.15), Vector2(80, 0.05), Vector2(100, 0)]
+speed_turn_rate_modifiers = [Vector2(0, 1.5), Vector2(0.3, 1), Vector2(0.65, 0.75), Vector2(1, 0.5), Vector2(2, 0.1)]
+drift_speed_bleed = 6.0
+drift_max_speed_ratio = 0.6
+time_until_normal_grip = 0.75
+drift_turn_multiplier = 1.5
+boost_drain_rate = 100.0
+boost_regen_rate = 5.0
+shield_regen_rate = 0.0
+shield_regen_delay = 8.0
+
+[node name="ChaseCamera" type="Camera3D" parent="." unique_id=172191882]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881895, 0, -0.25881895, 0.9659259, 0, 3.6, 6.8)
+current = true
+script = ExtResource("3_camera")
+target_path = NodePath("../PlayerCar")
+
+[node name="TacticalHUD" parent="." unique_id=719508187 instance=ExtResource("4_hud")]
+
+[node name="InitialTestTarget" parent="." unique_id=1179375618 instance=ExtResource("5_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.4, -45)
+
+[node name="EnemyDirector" type="Node3D" parent="." unique_id=1070937436 node_paths=PackedStringArray("player")]
+script = ExtResource("6_director")
+player = NodePath("../PlayerCar")
+spawn_interval = 14.0
+initial_delay = 5.0
+
+[node name="TrafficDirector" type="Node3D" parent="." unique_id=1449928205 node_paths=PackedStringArray("player")]
+script = ExtResource("7_traffic")
+player = NodePath("../PlayerCar")
+
+[node name="WeaponsVanDirector" type="Node3D" parent="." unique_id=1559928206 node_paths=PackedStringArray("player")]
+script = ExtResource("8_van_mgr")
+player = NodePath("../PlayerCar")
+spawn_on_objective_complete = false
+enable_distance_milestone = true
+milestone_distance_interval = 2500.0
+milestone_distance_increase_per_spawn = 250.0
+milestone_distance_increase_per_upgrade = 50.0
+
+[node name="ObjectiveManager" type="Node" parent="." unique_id=1146009093 node_paths=PackedStringArray("player")]
+script = ExtResource("9_obj_mgr")
+player = NodePath("../PlayerCar")

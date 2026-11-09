@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1m8kfxstraight"]
+
+[ext_resource type="Script" path="res://src/world/curved_highway_builder.gd" id="1_script"]
+
+[node name="HighwayChunkStraight" type="Node3D"]
+script = ExtResource("1_script")
+curve_angle_deg = 0.0
+chunk_length = 120.0
+subdivisions = 32
+road_width = 18.4

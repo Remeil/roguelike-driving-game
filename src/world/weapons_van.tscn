@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://dvan0scene001"]
+
+[ext_resource type="Script" uid="uid://wabodham6l6u" path="res://src/world/weapons_van.gd" id="1_van"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Cab"]
+size = Vector3(3.3, 3.4, 4.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_WallL"]
+size = Vector3(0.4, 3.4, 11.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_WallR"]
+size = Vector3(0.4, 3.4, 11.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Floor"]
+size = Vector3(3.4, 0.3, 11.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_FrontWall"]
+size = Vector3(3.4, 3.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_DockFunnel"]
+size = Vector3(3.6, 2.6, 6.8)
+
+[sub_resource type="StandardMaterial3D" id="Mat_VanArmor"]
+albedo_color = Color(0.12, 0.14, 0.16, 1)
+metallic = 0.85
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_VanWindshield"]
+albedo_color = Color(0.05, 0.1, 0.15, 0.9)
+metallic = 0.5
+roughness = 0.1
+
+[sub_resource type="StandardMaterial3D" id="Mat_VanChrome"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_RoofMarkers"]
+albedo_color = Color(1, 0.7, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.65, 0.1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_RampSteel"]
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_RunwayLight"]
+albedo_color = Color(0.2, 1, 0.6, 1)
+emission_enabled = true
+emission = Color(0.2, 1, 0.5, 1)
+emission_energy_multiplier = 4.5
+
+[node name="WeaponsVan" type="CharacterBody3D" unique_id=169840204]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_van")
+
+[node name="Collision_Cab" type="CollisionShape3D" parent="." unique_id=825358323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -8)
+shape = SubResource("BoxShape3D_Cab")
+
+[node name="Collision_WallL" type="CollisionShape3D" parent="." unique_id=226580150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65, 2.1, 0.25)
+shape = SubResource("BoxShape3D_WallL")
+
+[node name="Collision_WallR" type="CollisionShape3D" parent="." unique_id=1740071913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 2.1, 0.25)
+shape = SubResource("BoxShape3D_WallR")
+
+[node name="Collision_Floor" type="CollisionShape3D" parent="." unique_id=582473912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.25)
+shape = SubResource("BoxShape3D_Floor")
+
+[node name="Collision_FrontWall" type="CollisionShape3D" parent="." unique_id=1140533211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -5.4)
+shape = SubResource("BoxShape3D_FrontWall")
+
+[node name="DockAnchor" type="Marker3D" parent="." unique_id=1161231346]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -1.8)
+
+[node name="DockTrigger" type="Area3D" parent="." unique_id=323158593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 8)
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DockTrigger" unique_id=832650785]
+shape = SubResource("BoxShape3D_DockFunnel")
+
+[node name="Visuals" type="Node3D" parent="." unique_id=1728884706]
+
+[node name="Cab" type="Node3D" parent="Visuals" unique_id=1778605408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -8)
+
+[node name="CabBody" type="CSGBox3D" parent="Visuals/Cab" unique_id=1004700352]
+size = Vector3(3.2, 3.4, 4.4)
+material = SubResource("Mat_VanArmor")
+
+[node name="Windshield" type="CSGBox3D" parent="Visuals/Cab" unique_id=90581011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -2.18)
+size = Vector3(2.8, 1.2, 0.2)
+material = SubResource("Mat_VanWindshield")
+
+[node name="Grille" type="CSGBox3D" parent="Visuals/Cab" unique_id=45390034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -2.22)
+size = Vector3(2.4, 1.3, 0.15)
+material = SubResource("Mat_VanChrome")
+
+[node name="Bullbar" type="CSGBox3D" parent="Visuals/Cab" unique_id=1722084995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, -2.35)
+size = Vector3(3.3, 0.7, 0.3)
+material = SubResource("Mat_VanArmor")
+
+[node name="ExhaustL" type="CSGCylinder3D" parent="Visuals/Cab" unique_id=146697625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 0.8, 2.1)
+radius = 0.12
+height = 3.4
+material = SubResource("Mat_VanChrome")
+
+[node name="ExhaustR" type="CSGCylinder3D" parent="Visuals/Cab" unique_id=1838839624]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 0.8, 2.1)
+radius = 0.12
+height = 3.4
+material = SubResource("Mat_VanChrome")
+
+[node name="RoofMarkers" type="CSGBox3D" parent="Visuals/Cab" unique_id=790917823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.4)
+size = Vector3(2.2, 0.12, 0.25)
+material = SubResource("Mat_RoofMarkers")
+
+[node name="Trailer" type="Node3D" parent="Visuals" unique_id=566190749]
+
+[node name="Floor" type="CSGBox3D" parent="Visuals/Trailer" unique_id=370649050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.25)
+size = Vector3(3.6, 0.3, 11.5)
+material = SubResource("Mat_VanArmor")
+
+[node name="WallL" type="CSGBox3D" parent="Visuals/Trailer" unique_id=450358870]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65, 2.1, 0.25)
+size = Vector3(0.3, 3.4, 11.5)
+material = SubResource("Mat_VanArmor")
+
+[node name="WallR" type="CSGBox3D" parent="Visuals/Trailer" unique_id=292421031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 2.1, 0.25)
+size = Vector3(0.3, 3.4, 11.5)
+material = SubResource("Mat_VanArmor")
+
+[node name="Roof" type="CSGBox3D" parent="Visuals/Trailer" unique_id=1026944505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.85, 0.25)
+size = Vector3(3.6, 0.3, 11.5)
+material = SubResource("Mat_VanArmor")
+
+[node name="FrontBulkhead" type="CSGBox3D" parent="Visuals/Trailer" unique_id=662425067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -5.4)
+size = Vector3(3.2, 3.4, 0.3)
+material = SubResource("Mat_VanArmor")
+
+[node name="InteriorLight" type="OmniLight3D" parent="Visuals/Trailer" unique_id=1939486590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, -1.8)
+light_color = Color(0.3, 0.9, 1, 1)
+light_energy = 2.8
+omni_range = 8.0
+
+[node name="Ramp" type="Node3D" parent="Visuals/Trailer" unique_id=212091934]
+transform = Transform3D(1, 0, 0, 0, 0.9945219, -0.104528464, 0, 0.104528464, 0.9945219, 0, 0.45, 5.8)
+
+[node name="RampPlate" type="CSGBox3D" parent="Visuals/Trailer/Ramp" unique_id=858473195]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 2.1)
+size = Vector3(3.2, 0.08, 4.2)
+material = SubResource("Mat_RampSteel")
+
+[node name="CurbL" type="CSGBox3D" parent="Visuals/Trailer/Ramp" unique_id=2130219748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.08, 2.1)
+size = Vector3(0.18, 0.22, 4.2)
+material = SubResource("Mat_RoofMarkers")
+
+[node name="CurbR" type="CSGBox3D" parent="Visuals/Trailer/Ramp" unique_id=548869166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.08, 2.1)
+size = Vector3(0.18, 0.22, 4.2)
+material = SubResource("Mat_RoofMarkers")
+
+[node name="ToeSkid" type="CSGBox3D" parent="Visuals/Trailer/Ramp" unique_id=1908514091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.07, 4.2)
+size = Vector3(3.2, 0.04, 0.6)
+material = SubResource("Mat_RampSteel")
+
+[node name="RunwayLights" type="Node3D" parent="Visuals/Trailer/Ramp" unique_id=1608676712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+
+[node name="LightL1" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=475894296]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0.6)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightR1" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=430847923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0.6)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightL2" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=1385905526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.8)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightR2" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=346662842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 1.8)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightL3" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=814773731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 3)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightR3" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=1807477113]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 3)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightL4" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=1452662836]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 4)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")
+
+[node name="LightR4" type="CSGSphere3D" parent="Visuals/Trailer/Ramp/RunwayLights" unique_id=289904736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 4)
+radius = 0.09
+material = SubResource("Mat_RunwayLight")

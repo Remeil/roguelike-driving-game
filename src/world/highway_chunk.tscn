@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://b7vy5xq001wka"]
+
+[ext_resource type="Script" path="res://src/world/highway_chunk.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_road"]
+size = Vector3(18.4, 0.4, 120)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail"]
+size = Vector3(0.4, 1, 120)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Asphalt"]
+albedo_color = Color(0.13, 0.14, 0.15, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="Mat_YellowLine"]
+albedo_color = Color(0.95, 0.78, 0.15, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_WhiteLine"]
+albedo_color = Color(0.9, 0.92, 0.95, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_Guardrail"]
+albedo_color = Color(0.65, 0.68, 0.72, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_Terrain"]
+albedo_color = Color(0.22, 0.19, 0.16, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_StreetlightGlow"]
+albedo_color = Color(1, 0.88, 0.6, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.55, 1)
+emission_energy_multiplier = 4.0
+
+[node name="HighwayChunk" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="RoadBody" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -60)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadBody"]
+shape = SubResource("BoxShape3D_road")
+
+[node name="RoadMesh" type="CSGBox3D" parent="RoadBody"]
+size = Vector3(18.4, 0.4, 120)
+material = SubResource("Mat_Asphalt")
+
+[node name="CenterYellowLine" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.205, 0)
+size = Vector3(0.35, 0.02, 120)
+material = SubResource("Mat_YellowLine")
+
+[node name="LeftEdgeLine" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2, 0.205, 0)
+size = Vector3(0.25, 0.02, 120)
+material = SubResource("Mat_WhiteLine")
+
+[node name="RightEdgeLine" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.2, 0.205, 0)
+size = Vector3(0.25, 0.02, 120)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashL1" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1, 0.205, -45)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashL2" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1, 0.205, -15)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashL3" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1, 0.205, 15)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashL4" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1, 0.205, 45)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashR1" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.205, -45)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashR2" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.205, -15)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashR3" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.205, 15)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LaneDashR4" type="CSGBox3D" parent="RoadBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.205, 45)
+size = Vector3(0.2, 0.02, 12)
+material = SubResource("Mat_WhiteLine")
+
+[node name="LeftRail" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.3, 0.5, -60)
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftRail"]
+shape = SubResource("BoxShape3D_rail")
+
+[node name="RailMesh" type="CSGBox3D" parent="LeftRail"]
+size = Vector3(0.3, 0.8, 120)
+material = SubResource("Mat_Guardrail")
+
+[node name="RightRail" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3, 0.5, -60)
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightRail"]
+shape = SubResource("BoxShape3D_rail")
+
+[node name="RailMesh" type="CSGBox3D" parent="RightRail"]
+size = Vector3(0.3, 0.8, 120)
+material = SubResource("Mat_Guardrail")
+
+[node name="TerrainL" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -0.6, -60)
+size = Vector3(80, 0.4, 120)
+material = SubResource("Mat_Terrain")
+
+[node name="TerrainR" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, -0.6, -60)
+size = Vector3(80, 0.4, 120)
+material = SubResource("Mat_Terrain")
+
+[node name="LightPole1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -35)
+
+[node name="Pole" type="CSGCylinder3D" parent="LightPole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+radius = 0.12
+height = 7
+material = SubResource("Mat_Guardrail")
+
+[node name="Arm" type="CSGBox3D" parent="LightPole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 6.8, 0)
+size = Vector3(2.6, 0.15, 0.25)
+material = SubResource("Mat_Guardrail")
+
+[node name="LampHead" type="CSGBox3D" parent="LightPole1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 6.65, 0)
+size = Vector3(0.6, 0.18, 0.4)
+material = SubResource("Mat_StreetlightGlow")
+
+[node name="LightPole2" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 10.5, 0, -95)
+
+[node name="Pole" type="CSGCylinder3D" parent="LightPole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+radius = 0.12
+height = 7
+material = SubResource("Mat_Guardrail")
+
+[node name="Arm" type="CSGBox3D" parent="LightPole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 6.8, 0)
+size = Vector3(2.6, 0.15, 0.25)
+material = SubResource("Mat_Guardrail")
+
+[node name="LampHead" type="CSGBox3D" parent="LightPole2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 6.65, 0)
+size = Vector3(0.6, 0.18, 0.4)
+material = SubResource("Mat_StreetlightGlow")
